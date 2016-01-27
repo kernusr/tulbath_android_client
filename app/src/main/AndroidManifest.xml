@@ -23,5 +23,6 @@
             android:theme="@style/AppTheme" >
         </activity>
     </application>
-
+    <!--  Internet Permissions -->
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

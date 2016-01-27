@@ -1,9 +1,8 @@
 package com.kernusr.tulbath;
 
 
+import android.app.Activity;
 import android.content.Context;
-import android.content.res.AssetManager;
-import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,14 +10,15 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListAdapter extends BaseAdapter {
 
     private Context ctx;
 
-    public ListAdapter(Context context){
-        ctx = context;
+    public ListAdapter(Activity activity, ArrayList<HashMap<String, String>> itemList, String[] strings) {
+
     }
 
     @Override
@@ -64,8 +64,7 @@ public class ListAdapter extends BaseAdapter {
         itemimage.setImageResource(cnt[position][0]);
         itemtitle.setText(cnt[position][1]);
         itemadres.setText(cnt[position][2]);
-        String price = "от " + cnt[position][5] + " руб/час";
-        itemprice.setText(price);
+        itemprice.setText(cnt[position][5]);
 
         return item;
     }
