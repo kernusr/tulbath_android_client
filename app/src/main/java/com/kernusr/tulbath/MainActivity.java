@@ -2,9 +2,13 @@ package com.kernusr.tulbath;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -25,7 +29,6 @@ public class MainActivity extends Activity {
     // Log tag
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    // Billionaires json url
     private static final String url = "https://bitbucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/lists/page_1.json";
     private ProgressDialog pDialog;
     private List<BathContent> bathContentList = new ArrayList<BathContent>();
@@ -42,9 +45,17 @@ public class MainActivity extends Activity {
         listView.setAdapter(listAdapter);
 
         pDialog = new ProgressDialog(this);
-        // Showing progress dialog before making http request
         pDialog.setMessage("Загрузка...");
         pDialog.show();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(view.getContext(), FullActivity.class);
+                intent.putExtra("id", position);
+                startActivity(intent);
+            }
+        });
 
         // Creating volley request obj
         JsonArrayRequest bathReq = new JsonArrayRequest(url,
@@ -93,6 +104,17 @@ public class MainActivity extends Activity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(bathReq);
+
+        //listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        //    public void onItemClick(AdapterView<?> parent, View view,
+        //                            int position, long id) {
+        //        //TextView itemId = (TextView) view.findViewById(R.id.id);
+        //        //int pid = Integer.parseInt(itemId.getText().toString());
+        //        Intent intent = new Intent(view.getContext(), FullActivity.class);
+        //        //intent.putExtra("id",pid);
+        //        startActivity(intent);
+        //    }
+        //});
     }
 
     @Override

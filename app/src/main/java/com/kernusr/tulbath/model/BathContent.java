@@ -6,6 +6,7 @@ public class BathContent {
     private int id;
     private String address;
     private String price;
+    private String description;
 
     public String getName() {
         return name;
@@ -45,5 +46,12 @@ public class BathContent {
 
     public void setPrice(String price) {
         this.price = price;
+    }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
