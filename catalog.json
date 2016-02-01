@@ -1,63 +1,72 @@
 [
-{
+{		
+		"id": "1",
         "name": "Богучаровские Бани",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1000",
         "address": "Тула (Поселок Октябрьский, 99)"
     },
 	{
+		"id": "2",
         "name": "Адмирал",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1500",
         "address": "ул. Октябрьская, д. 42"
     },
     {
+		"id": "3",
         "name": "Фортуна",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1300",
         "address": "Овражная, 17"
     },
     {
+		"id": "4",
         "name": "На Литейной",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1200",
         "address": "Литейная, 9"
     },
     {
+		"id": "5",
         "name": "Тихая бухта",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1100",
         "address": "Краснодонцев, 11"
     },
     {
+		"id": "6",
         "name": "Pegas Club",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1200",
         "address": "ул. Демидовская, 179 А"
     },
     {
+		"id": "7",
         "name": "Ёлки-Палки",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1800",
         "address": "Калужское шоссе, 97 км (садовый центр \"ЭкоФлора\")"
     },
     {
+		"id": "8",
         "name": "Рандеву",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1000",
         "address": "с. Хрущево, 179 км а/д Москва-Харьков"
     },
     {
+		"id": "9",
         "name": "Акватория",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1600",
         "address": "ул. Демидовская, 179"
     },
     {
+		"id": "10",
         "name": "Игуана",
         "image": "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/images/Bill_Gates.jpg",
         "price": "1700",
         "address": "Новомедвенский проезд, 6"
-    }
-    
+    }    
     ]
