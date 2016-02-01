@@ -1,6 +1,6 @@
 package com.kernusr.tulbath.model;
 
-public class WorldsBillionaires {
+public class BathContent {
 
     private String name, thumbnailUrl;
     private int year;

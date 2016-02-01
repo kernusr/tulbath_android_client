@@ -12,7 +12,7 @@ import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
 import com.kernusr.tulbath.AppController;
 import com.kernusr.tulbath.R;
-import com.kernusr.tulbath.model.WorldsBillionaires;
+import com.kernusr.tulbath.model.BathContent;
 
 import java.util.List;
 
@@ -21,22 +21,22 @@ public class CustomListAdapter extends BaseAdapter {
 
     private Activity activity;
     private LayoutInflater inflater;
-    private List<WorldsBillionaires> billionairesItems;
+    private List<BathContent> bathItems;
     ImageLoader imageLoader = AppController.getInstance().getImageLoader();
 
-    public CustomListAdapter(Activity activity, List<WorldsBillionaires> billionairesItems) {
+    public CustomListAdapter(Activity activity, List<BathContent> bathItems) {
         this.activity = activity;
-        this.billionairesItems = billionairesItems;
+        this.bathItems = bathItems;
     }
 
     @Override
     public int getCount() {
-        return billionairesItems.size();
+        return bathItems.size();
     }
 
     @Override
     public Object getItem(int location) {
-        return billionairesItems.get(location);
+        return bathItems.get(location);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CustomListAdapter extends BaseAdapter {
             inflater = (LayoutInflater) activity
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         if (convertView == null)
-            convertView = inflater.inflate(R.layout.list_row, null);
+            convertView = inflater.inflate(R.layout.view_item_list, null);
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
@@ -63,7 +63,7 @@ public class CustomListAdapter extends BaseAdapter {
         TextView year = (TextView) convertView.findViewById(R.id.inYear);
 
         // getting billionaires data for the row
-        WorldsBillionaires m = billionairesItems.get(position);
+        BathContent m = bathItems.get(position);
 
         // thumbnail image
         thumbNail.setImageUrl(m.getThumbnailUrl(), imageLoader);
