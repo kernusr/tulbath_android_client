@@ -55,30 +55,24 @@ public class CustomListAdapter extends BaseAdapter {
 
         if (imageLoader == null)
             imageLoader = AppController.getInstance().getImageLoader();
-        NetworkImageView thumbNail = (NetworkImageView) convertView
-                .findViewById(R.id.thumbnail);
+        NetworkImageView itemImage = (NetworkImageView) convertView
+                .findViewById(R.id.image);
         TextView name = (TextView) convertView.findViewById(R.id.name);
-        TextView worth = (TextView) convertView.findViewById(R.id.worth);
-        TextView source = (TextView) convertView.findViewById(R.id.source);
-        TextView year = (TextView) convertView.findViewById(R.id.inYear);
+        TextView price = (TextView) convertView.findViewById(R.id.price);
+        TextView address = (TextView) convertView.findViewById(R.id.address);
+        TextView id = (TextView) convertView.findViewById(R.id.id);
 
         // getting billionaires data for the row
         BathContent m = bathItems.get(position);
 
         // thumbnail image
-        thumbNail.setImageUrl(m.getThumbnailUrl(), imageLoader);
+        itemImage.setImageUrl(m.getItemImage(), imageLoader);
 
         // name
         name.setText(m.getName());
-
-        // Wealth Source
-        source.setText("Wealth Source: " + String.valueOf(m.getSource()));
-
-
-        worth.setText(String.valueOf(m.getWorth()));
-
-        // release year
-        year.setText(String.valueOf(m.getYear()));
+        address.setText(String.valueOf(m.getAddress()));
+        price.setText("От " + String.valueOf(m.getPrice()) + " руб.");
+        id.setText(String.valueOf(m.getId()));
 
         return convertView;
     }

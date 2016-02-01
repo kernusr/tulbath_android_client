@@ -2,10 +2,10 @@ package com.kernusr.tulbath.model;
 
 public class BathContent {
 
-    private String name, thumbnailUrl;
-    private int year;
-    private String source;
-    private String worth;
+    private String name, itemImage;
+    private int id;
+    private String address;
+    private String price;
 
     public String getName() {
         return name;
@@ -15,35 +15,35 @@ public class BathContent {
         this.name = name;
     }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
+    public String getItemImage() {
+        return itemImage;
     }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
+    public void setItemImage(String itemImage) {
+        this.itemImage = itemImage;
     }
 
-    public int getYear() {
-        return year;
+    public int getId() {
+        return id;
     }
 
-    public void setYear(int year) {
-        this.year = year;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getSource() {
-        return source;
+    public String getAddress() {
+        return address;
     }
 
-    public void setSource(String source) {
-        this.source = source;
+    public void setAddress(String address) {
+        this.address = address;
     }
 
-    public String getWorth() {
-        return worth;
+    public String getPrice() {
+        return price;
     }
 
-    public void setWorth(String worth) {
-        this.worth = worth;
+    public void setPrice(String price) {
+        this.price = price;
     }
 }

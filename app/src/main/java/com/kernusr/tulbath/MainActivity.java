@@ -26,7 +26,7 @@ public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     // Billionaires json url
-    private static final String url = "https://raw.githubusercontent.com/mobilesiri/Android-Custom-Listview-Using-Volley/master/richman.json";
+    private static final String url = "https://bitbucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/lists/page_1.json";
     private ProgressDialog pDialog;
     private List<BathContent> bathContentList = new ArrayList<BathContent>();
     private ListView listView;
@@ -49,6 +49,9 @@ public class MainActivity extends Activity {
         // Creating volley request obj
         JsonArrayRequest bathReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
+
+                    private static final String img_url = "https://bytebucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/images/drawable-hdpi/";
+
                     @Override
                     public void onResponse(JSONArray response) {
                         Log.d(TAG, response.toString());
@@ -60,10 +63,10 @@ public class MainActivity extends Activity {
                                 JSONObject obj = response.getJSONObject(i);
                                 BathContent bathItem = new BathContent();
                                 bathItem.setName(obj.getString("name"));
-                                bathItem.setThumbnailUrl(obj.getString("image"));
-                                bathItem.setWorth(obj.getString("worth"));
-                                bathItem.setYear(obj.getInt("InYear"));
-                                bathItem.setSource(obj.getString("source"));
+                                bathItem.setItemImage(img_url + "banya" + obj.getInt("id") + ".jpg");
+                                bathItem.setPrice(obj.getString("price"));
+                                bathItem.setId(obj.getInt("id"));
+                                bathItem.setAddress(obj.getString("address"));
 
                                 // adding Billionaire to worldsBillionaires array
                                 bathContentList.add(bathItem);
