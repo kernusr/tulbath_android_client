@@ -17,9 +17,6 @@ public class ListAdapter extends BaseAdapter {
 
     private Context ctx;
 
-    public ListAdapter(Activity activity, ArrayList<HashMap<String, String>> itemList, String[] strings) {
-
-    }
 
     @Override
     public int getCount() {
