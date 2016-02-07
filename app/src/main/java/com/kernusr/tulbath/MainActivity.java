@@ -51,8 +51,14 @@ public class MainActivity extends Activity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(view.getContext(), FullActivity.class);
-                intent.putExtra("id", position);
+                // getting values from selected ListItem
+                String pid = ((TextView) view.findViewById(R.id.id)).getText()
+                        .toString();
+
+                // Запускаем новый intent который покажет нам Activity
+                Intent intent = new Intent(getApplicationContext(), FullActivity.class);
+                // отправляем pid в следующий activity
+                intent.putExtra("client_id", pid);
                 startActivity(intent);
             }
         });
@@ -104,17 +110,6 @@ public class MainActivity extends Activity {
 
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(bathReq);
-
-        //listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-        //    public void onItemClick(AdapterView<?> parent, View view,
-        //                            int position, long id) {
-        //        //TextView itemId = (TextView) view.findViewById(R.id.id);
-        //        //int pid = Integer.parseInt(itemId.getText().toString());
-        //        Intent intent = new Intent(view.getContext(), FullActivity.class);
-        //        //intent.putExtra("id",pid);
-        //        startActivity(intent);
-        //    }
-        //});
     }
 
     @Override
