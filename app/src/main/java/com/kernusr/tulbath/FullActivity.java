@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
@@ -47,49 +50,58 @@ public class FullActivity extends Activity {
         Intent i = getIntent();
         // получаем id продукта (pid) с формы
         pid = i.getStringExtra("client_id");
-        url = "https://bitbucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/full_items/full_item_"+pid+".json";
+        url = "https://bitbucket.org/tulbath/tulbath_content/raw/750eca5d48414d719e00fb993357d7c80a76414a/full_items/full_item_"+pid+".json";
         img_url = "https://bytebucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/images/drawable-hdpi/b"+pid+".jpg";
         NetworkImageView itemFullImage = (NetworkImageView) findViewById(R.id.itemFullImage);
+        final TextView itemFullName = (TextView) findViewById(R.id.itemFullName);
+        final TextView itemFullPrice = (TextView) findViewById(R.id.itemFullPrice);
+        final TextView itemFullAddress = (TextView) findViewById(R.id.itemFullAddress);
+        final TextView itemFullDescription = (TextView) findViewById(R.id.itemFullDescription);
+
         itemFullImage.setImageUrl(img_url, imageLoader);
 
-        // Creating volley request obj
-        JsonArrayRequest fullReq = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d(TAG, response.toString());
-                        //Log.d(img_url, response.toString());
-                        Log.d(url, response.toString());
+        JsonObjectRequest fullItem = new JsonObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener<JSONObject>() {
 
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d(TAG, response.toString());
 
-                        TextView itemFullName = (TextView) findViewById(R.id.itemFullName);
-                        TextView itemFullPrice = (TextView) findViewById(R.id.itemFullPrice);
-                        TextView itemFullAddress = (TextView) findViewById(R.id.itemFullAddress);
-                        TextView itemFullDescription = (TextView) findViewById(R.id.itemFullDescription);
+                try {
+                    // Parsing json object response
+                    // response will be a json object
+                    String name = response.getString("name");
+                    String price = response.getString("price");
+                    String address = response.getString("address");
+                    String description = response.getString("description");
 
-                        try {
-                            JSONObject obj = response.getJSONObject(0);
+                    itemFullName.setText(name);
+                    itemFullAddress.setText(price);
+                    itemFullPrice.setText(address);
+                    itemFullDescription.setText(description);
 
-                            itemFullName.setText(/*obj.getString("name")*/"Что за нах № "+pid);
-                            itemFullAddress.setText(obj.getString("address"));
-                            itemFullPrice.setText("От "+obj.getString("price")+" руб.");
-                            itemFullDescription.setText(obj.getString("description"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        hidePDialog();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        VolleyLog.d(TAG, "Error: " + error.getMessage());
-                        hidePDialog();
-                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),
+                            "Error: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
                 }
-        );
+                hidePDialog();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                Toast.makeText(getApplicationContext(),
+                        error.getMessage(), Toast.LENGTH_SHORT).show();
+                // hide the progress dialog
+                hidePDialog();
+            }
+        });
+
         // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(fullReq);
+        AppController.getInstance().addToRequestQueue(fullItem);
     }
 
     @Override
