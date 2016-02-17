@@ -50,35 +50,38 @@ public class FullActivity extends Activity {
         Intent i = getIntent();
         // получаем id продукта (pid) с формы
         pid = i.getStringExtra("client_id");
-        url = "https://bitbucket.org/tulbath/tulbath_content/raw/750eca5d48414d719e00fb993357d7c80a76414a/full_items/full_item_"+pid+".json";
+        url = "http://tulbath.sitevtule.com/catalog/show?id="+pid;
         img_url = "https://bytebucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/images/drawable-hdpi/b"+pid+".jpg";
         NetworkImageView itemFullImage = (NetworkImageView) findViewById(R.id.itemFullImage);
         final TextView itemFullName = (TextView) findViewById(R.id.itemFullName);
-        final TextView itemFullPrice = (TextView) findViewById(R.id.itemFullPrice);
+        //final TextView itemFullPrice = (TextView) findViewById(R.id.itemFullPrice);
         final TextView itemFullAddress = (TextView) findViewById(R.id.itemFullAddress);
-        final TextView itemFullDescription = (TextView) findViewById(R.id.itemFullDescription);
+        //final TextView itemFullDescription = (TextView) findViewById(R.id.itemFullDescription);
 
         itemFullImage.setImageUrl(img_url, imageLoader);
 
-        JsonObjectRequest fullItem = new JsonObjectRequest(Request.Method.GET,
-                url, null, new Response.Listener<JSONObject>() {
+        JsonArrayRequest fullItem = new JsonArrayRequest(url,
+                new Response.Listener<JSONArray>() {
 
             @Override
-            public void onResponse(JSONObject response) {
+            public void onResponse(JSONArray response) {
                 Log.d(TAG, response.toString());
 
+
+
                 try {
+                    JSONObject obj = response.getJSONObject(0);
                     // Parsing json object response
                     // response will be a json object
-                    String name = response.getString("name");
-                    String price = response.getString("price");
-                    String address = response.getString("address");
-                    String description = response.getString("description");
+                    String name = obj.getString("name");
+                    //String price = response.getString("price");
+                    String address = obj.getString("address");
+                    //String description = response.getString("description");
 
                     itemFullName.setText(name);
-                    itemFullAddress.setText(price);
-                    itemFullPrice.setText(address);
-                    itemFullDescription.setText(description);
+                    itemFullAddress.setText(address);
+                    //itemFullPrice.setText(price);
+                    //itemFullDescription.setText(description);
 
                 } catch (JSONException e) {
                     e.printStackTrace();

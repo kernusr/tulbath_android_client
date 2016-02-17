@@ -29,7 +29,7 @@ public class MainActivity extends Activity {
     // Log tag
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private static final String url = "https://bitbucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/lists/page_1.json";
+    private static final String url = "http://tulbath.sitevtule.com/catalog";
     private ProgressDialog pDialog;
     private List<BathContent> bathContentList = new ArrayList<BathContent>();
     private ListView listView;
