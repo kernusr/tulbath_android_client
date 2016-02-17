@@ -6,10 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
@@ -35,6 +37,9 @@ public class MainActivity extends Activity {
     private ListView listView;
     private CustomListAdapter listAdapter;
 
+    private boolean mHasData = false;
+    private boolean mInError = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +48,7 @@ public class MainActivity extends Activity {
         listView = (ListView) findViewById(R.id.list_view);
         listAdapter = new CustomListAdapter(this, bathContentList);
         listView.setAdapter(listAdapter);
+        listView.setOnScrollListener(new LoadOnScrollListener());
 
         pDialog = new ProgressDialog(this);
         pDialog.setMessage("Загрузка...");
@@ -62,54 +68,108 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
 
-        // Creating volley request obj
-        JsonArrayRequest bathReq = new JsonArrayRequest(url,
-                new Response.Listener<JSONArray>() {
-                    //картинки
-                    private static final String img_url = "https://bytebucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/images/drawable-hdpi/";
+    public class LoadOnScrollListener implements AbsListView.OnScrollListener {
 
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d(TAG, response.toString());
+        private int visibleThreshold = 5;
+        private int currentPage = 0;
+        private int previousTotal = 0;
+        private boolean loading = true;
 
-                        // Parsing json
-                        for (int i = 0; i < response.length(); i++) {
-                            try {
+        public LoadOnScrollListener() {
+        }
+        public LoadOnScrollListener(int visibleThreshold) {
+            this.visibleThreshold = visibleThreshold;
+        }
 
-                                JSONObject obj = response.getJSONObject(i);
-                                BathContent bathItem = new BathContent();
-                                bathItem.setName(obj.getString("name"));
-                                bathItem.setItemImage(img_url + "banya" + obj.getInt("id") + ".jpg");
-                                bathItem.setPrice(obj.getString("price"));
-                                bathItem.setId(obj.getInt("id"));
-                                bathItem.setAddress(obj.getString("address"));
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem,
+                             int visibleItemCount, int totalItemCount) {
+            if (loading) {
+                if (totalItemCount > previousTotal) {
+                    loading = false;
+                    previousTotal = totalItemCount;
+                    currentPage++;
+                }
+            }
+            if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
+                loadPage();
+                loading = true;
+            }
+        }
 
-                                // adding Billionaire to worldsBillionaires array
-                                bathContentList.add(bathItem);
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+        }
 
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
+        public int getCurrentPage() {
+            return currentPage;
+        }
+    }
 
-                        }
+    private void loadPage() {
+        int page = 1 + (bathContentList.size()/10);
+        JsonArrayRequest bathReq = new JsonArrayRequest(Request.Method.GET,
+                url+"?page="+page,
+                null,
+                createReqSuccessListener(),
+                createReqErrorListener());
+        AppController.getInstance().addToRequestQueue(bathReq);
+    }
 
-                        hidePDialog();
 
-                        // notifying list adapter about data changes
-                        // so that it renders the list view with updated data
+    private Response.Listener<JSONArray> createReqSuccessListener() {
+        return new Response.Listener<JSONArray>() {
+
+            private static final String img_url = "https://bytebucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/images/drawable-hdpi/";
+
+            @Override
+            public void onResponse(JSONArray response) {
+                Log.d(TAG, response.toString());
+
+                for (int i = 0; i < response.length(); i++) {
+                    try {
+                        JSONObject obj = response.getJSONObject(i);
+                        BathContent bathItem = new BathContent();
+                        bathItem.setName(obj.getString("name"));
+                        bathItem.setItemImage(img_url + "banya" + obj.getInt("id") + ".jpg");
+                        bathItem.setPrice(obj.getString("price"));
+                        bathItem.setId(obj.getInt("id"));
+                        bathItem.setAddress(obj.getString("address"));
+
+                        bathContentList.add(bathItem);
+
                         listAdapter.notifyDataSetChanged();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                }, new Response.ErrorListener() {
+                }
+
+                hidePDialog();
+
+            }
+        };
+    }
+
+
+    private Response.ErrorListener createReqErrorListener() {
+        return new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                mInError = true;
                 VolleyLog.d(TAG, "Error: " + error.getMessage());
                 hidePDialog();
             }
-        });
+        };
+    }
 
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(bathReq);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (!mHasData && !mInError) {
+            loadPage();
+        }
     }
 
     @Override

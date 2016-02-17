@@ -66,9 +66,6 @@ public class FullActivity extends Activity {
             @Override
             public void onResponse(JSONArray response) {
                 Log.d(TAG, response.toString());
-
-
-
                 try {
                     JSONObject obj = response.getJSONObject(0);
                     // Parsing json object response
