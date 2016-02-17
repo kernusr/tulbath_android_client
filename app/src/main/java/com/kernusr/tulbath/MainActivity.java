@@ -66,7 +66,7 @@ public class MainActivity extends Activity {
         // Creating volley request obj
         JsonArrayRequest bathReq = new JsonArrayRequest(url,
                 new Response.Listener<JSONArray>() {
-
+                    //картинки
                     private static final String img_url = "https://bytebucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/images/drawable-hdpi/";
 
                     @Override

@@ -78,6 +78,7 @@ public class FullActivity extends Activity {
                     String address = obj.getString("address");
                     //String description = response.getString("description");
 
+                    //Отрисовуем на экране усё
                     itemFullName.setText(name);
                     itemFullAddress.setText(address);
                     //itemFullPrice.setText(price);
