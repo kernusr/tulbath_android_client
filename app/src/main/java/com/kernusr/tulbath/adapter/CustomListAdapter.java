@@ -74,7 +74,7 @@ public class CustomListAdapter extends BaseAdapter {
         address.setText(String.valueOf(m.getAddress()));
         price.setText("От " + String.valueOf(m.getPrice()) + " руб.");
         id.setText(String.valueOf(m.getId()));
-        phones.setText(String.valueOf(m.getPhones()));
+        phones.setText(String.valueOf(m.getPhones())+m.getPhones().length());
 
         return convertView;
     }

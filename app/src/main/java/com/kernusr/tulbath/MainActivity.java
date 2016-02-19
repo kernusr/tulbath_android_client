@@ -3,6 +3,7 @@ package com.kernusr.tulbath;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +17,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.google.android.gms.appindexing.Action;
+import com.google.android.gms.appindexing.AppIndex;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.kernusr.tulbath.adapter.CustomListAdapter;
 import com.kernusr.tulbath.model.BathContent;
 
@@ -39,6 +43,11 @@ public class MainActivity extends Activity {
 
     private boolean mHasData = false;
     private boolean mInError = false;
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
+    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,49 @@ public class MainActivity extends Activity {
                 startActivity(intent);
             }
         });
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client.connect();
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.kernusr.tulbath/http/host/path")
+        );
+        AppIndex.AppIndexApi.start(client, viewAction);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        Action viewAction = Action.newAction(
+                Action.TYPE_VIEW, // TODO: choose an action type.
+                "Main Page", // TODO: Define a title for the content shown.
+                // TODO: If you have web page content that matches this app activity's content,
+                // make sure this auto-generated web page URL is correct.
+                // Otherwise, set the URL to null.
+                Uri.parse("http://host/path"),
+                // TODO: Make sure this auto-generated app deep link URI is correct.
+                Uri.parse("android-app://com.kernusr.tulbath/http/host/path")
+        );
+        AppIndex.AppIndexApi.end(client, viewAction);
+        client.disconnect();
     }
 
     public class LoadOnScrollListener implements AbsListView.OnScrollListener {
@@ -79,6 +131,7 @@ public class MainActivity extends Activity {
 
         public LoadOnScrollListener() {
         }
+
         public LoadOnScrollListener(int visibleThreshold) {
             this.visibleThreshold = visibleThreshold;
         }
@@ -109,9 +162,9 @@ public class MainActivity extends Activity {
     }
 
     private void loadPage() {
-        int page = 1 + (bathContentList.size()/10);
+        int page = 1 + (bathContentList.size() / 10);
         JsonArrayRequest bathReq = new JsonArrayRequest(Request.Method.GET,
-                url+"?page="+page,
+                url + "?page=" + page,
                 null,
                 createReqSuccessListener(),
                 createReqErrorListener());
@@ -137,12 +190,7 @@ public class MainActivity extends Activity {
                         bathItem.setPrice(obj.getString("price"));
                         bathItem.setId(obj.getInt("id"));
                         bathItem.setAddress(obj.getString("address"));
-                        JSONArray JSONPhones = obj.getJSONArray("phones");
-                        List<String> phones = new ArrayList<String>();
-                        for(int n = 0; n < JSONPhones.length(); n++){
-                            phones.add(JSONPhones.getString(n));
-                        }
-                        bathItem.setPhones(phones);
+                        bathItem.setPhones(obj.getJSONArray("phones"));
 
                         bathContentList.add(bathItem);
 
