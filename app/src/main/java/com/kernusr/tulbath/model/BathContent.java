@@ -1,5 +1,9 @@
 package com.kernusr.tulbath.model;
 
+
+import java.util.List;
+
+
 public class BathContent {
 
     private String name, itemImage;
@@ -7,6 +11,7 @@ public class BathContent {
     private String address;
     private String price;
     private String description;
+    private List Phones;
 
     public String getName() {
         return name;
@@ -54,4 +59,14 @@ public class BathContent {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public List getPhones() {
+        return Phones;
+    }
+
+    public void setPhones(List Phones) {
+        this.Phones = Phones;
+    }
+
+
 }

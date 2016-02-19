@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/list_row_selector"
-    android:padding="8dp">
+    android:padding="8dp"
+    android:descendantFocusability="blocksDescendants">
 
     <!-- Image -->
     <com.android.volley.toolbox.NetworkImageView
@@ -47,11 +48,29 @@
         android:textColor="@color/address"
         android:textSize="@dimen/address" />
 
+    <!-- Phones -->
+    <TextView
+        android:id="@+id/phones"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/address"
+        android:layout_marginTop="5dp"
+        android:layout_toRightOf="@+id/image"
+        android:textColor="@color/address"
+        android:textSize="@dimen/address" />
+
     <!-- ID -->
     <TextView
         android:id="@+id/id"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:visibility="gone" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Button1"
+        />
 
 </RelativeLayout>

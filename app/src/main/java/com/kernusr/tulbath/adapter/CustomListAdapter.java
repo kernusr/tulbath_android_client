@@ -61,6 +61,7 @@ public class CustomListAdapter extends BaseAdapter {
         TextView price = (TextView) convertView.findViewById(R.id.price);
         TextView address = (TextView) convertView.findViewById(R.id.address);
         TextView id = (TextView) convertView.findViewById(R.id.id);
+        TextView phones = (TextView) convertView.findViewById(R.id.phones);
 
         // getting billionaires data for the row
         BathContent m = bathItems.get(position);
@@ -73,6 +74,7 @@ public class CustomListAdapter extends BaseAdapter {
         address.setText(String.valueOf(m.getAddress()));
         price.setText("От " + String.valueOf(m.getPrice()) + " руб.");
         id.setText(String.valueOf(m.getId()));
+        phones.setText(String.valueOf(m.getPhones()));
 
         return convertView;
     }

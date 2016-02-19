@@ -137,6 +137,12 @@ public class MainActivity extends Activity {
                         bathItem.setPrice(obj.getString("price"));
                         bathItem.setId(obj.getInt("id"));
                         bathItem.setAddress(obj.getString("address"));
+                        JSONArray JSONPhones = obj.getJSONArray("phones");
+                        List<String> phones = new ArrayList<String>();
+                        for(int n = 0; n < JSONPhones.length(); n++){
+                            phones.add(JSONPhones.getString(n));
+                        }
+                        bathItem.setPhones(phones);
 
                         bathContentList.add(bathItem);
 
@@ -158,7 +164,7 @@ public class MainActivity extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 mInError = true;
-                VolleyLog.d(TAG, "Error: " + error.getMessage());
+                VolleyLog.d(TAG, "Error: " + error.toString());
                 hidePDialog();
             }
         };
