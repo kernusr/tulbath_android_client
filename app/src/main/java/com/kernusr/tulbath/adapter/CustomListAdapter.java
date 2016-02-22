@@ -69,12 +69,11 @@ public class CustomListAdapter extends BaseAdapter {
         TextView price = (TextView) convertView.findViewById(R.id.price);
         TextView address = (TextView) convertView.findViewById(R.id.address);
         TextView id = (TextView) convertView.findViewById(R.id.id);
-        TextView phones = (TextView) convertView.findViewById(R.id.phones);
         TextView dialBtn = (Button) convertView.findViewById(R.id.dial_btn);
 
         // getting billionaires data for the row
         BathContent m = bathItems.get(position);
-        final JSONArray phonesArr = m.getPhones();
+        final ArrayList phonesArr = m.getPhones();
 
         // thumbnail image
         itemImage.setImageUrl(m.getItemImage(), imageLoader);
@@ -84,7 +83,7 @@ public class CustomListAdapter extends BaseAdapter {
         address.setText(String.valueOf(m.getAddress()));
         price.setText("От " + String.valueOf(m.getPrice()) + " руб.");
         id.setText(String.valueOf(m.getId()));
-        switch (phonesArr.length()){
+        switch (phonesArr.size()){
             case 0: //ничего не происходит;
                 dialBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -99,12 +98,7 @@ public class CustomListAdapter extends BaseAdapter {
                 dialBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                 public void onClick(View v){
-                        Intent i = null;
-                        try {
-                            i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phonesArr.getString(0)));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phonesArr.get(0)));
                         activity.startActivity(i);
                     }
                 });
@@ -119,8 +113,6 @@ public class CustomListAdapter extends BaseAdapter {
                 });
                 break;
         }
-
-        phones.setText(String.valueOf(phonesArr) +phonesArr.length());
 
         return convertView;
     }

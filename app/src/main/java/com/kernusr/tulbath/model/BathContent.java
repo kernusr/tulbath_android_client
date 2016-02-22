@@ -2,8 +2,9 @@ package com.kernusr.tulbath.model;
 
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
-import java.util.List;
+import java.util.ArrayList;
 
 
 public class BathContent {
@@ -12,7 +13,7 @@ public class BathContent {
     private int id;
     private String address;
     private String price;
-    private JSONArray Phones;
+    private ArrayList Phones;
 
     public String getName() {
         return name;
@@ -54,12 +55,15 @@ public class BathContent {
         this.price = price;
     }
 
-    public JSONArray getPhones() {
+    public ArrayList getPhones() {
         return Phones;
     }
 
-    public void setPhones(JSONArray Phones) {
-        this.Phones = Phones;
+    public void setPhones(JSONArray Phones) throws JSONException {
+        this.Phones = new ArrayList();
+        for(int i=0; i<Phones.length(); i++){
+            this.Phones.add(Phones.getString(i));
+        }
     }
 
 
