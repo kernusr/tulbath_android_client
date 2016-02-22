@@ -2,11 +2,15 @@ package com.kernusr.tulbath.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.NetworkImageView;
@@ -14,6 +18,10 @@ import com.kernusr.tulbath.AppController;
 import com.kernusr.tulbath.R;
 import com.kernusr.tulbath.model.BathContent;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -62,9 +70,11 @@ public class CustomListAdapter extends BaseAdapter {
         TextView address = (TextView) convertView.findViewById(R.id.address);
         TextView id = (TextView) convertView.findViewById(R.id.id);
         TextView phones = (TextView) convertView.findViewById(R.id.phones);
+        TextView dialBtn = (Button) convertView.findViewById(R.id.dial_btn);
 
         // getting billionaires data for the row
         BathContent m = bathItems.get(position);
+        final JSONArray phonesArr = m.getPhones();
 
         // thumbnail image
         itemImage.setImageUrl(m.getItemImage(), imageLoader);
@@ -74,7 +84,43 @@ public class CustomListAdapter extends BaseAdapter {
         address.setText(String.valueOf(m.getAddress()));
         price.setText("От " + String.valueOf(m.getPrice()) + " руб.");
         id.setText(String.valueOf(m.getId()));
-        phones.setText(String.valueOf(m.getPhones())+m.getPhones().length());
+        switch (phonesArr.length()){
+            case 0: //ничего не происходит;
+                dialBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Toast toast = Toast.makeText(v.getContext(), "Номер не задан", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+                break;
+            case 1:
+                //показываем кнопку вызова номера
+                dialBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                public void onClick(View v){
+                        Intent i = null;
+                        try {
+                            i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phonesArr.getString(0)));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        activity.startActivity(i);
+                    }
+                });
+                break;
+            default: //вызываем диалоговое окно для выбора номера;
+                dialBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v){
+                        Toast toast = Toast.makeText(v.getContext(), "Задано несколько номеров", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
+                break;
+        }
+
+        phones.setText(String.valueOf(phonesArr) +phonesArr.length());
 
         return convertView;
     }
