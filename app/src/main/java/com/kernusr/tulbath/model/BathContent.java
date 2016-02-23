@@ -13,7 +13,7 @@ public class BathContent {
     private int id;
     private String address;
     private String price;
-    private ArrayList Phones;
+    private ArrayList<String> Phones;
 
     public String getName() {
         return name;
@@ -55,12 +55,12 @@ public class BathContent {
         this.price = price;
     }
 
-    public ArrayList getPhones() {
+    public ArrayList<String> getPhones() {
         return Phones;
     }
 
     public void setPhones(JSONArray Phones) throws JSONException {
-        this.Phones = new ArrayList();
+        this.Phones = new ArrayList<String>();
         for(int i=0; i<Phones.length(); i++){
             this.Phones.add(Phones.getString(i));
         }

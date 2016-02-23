@@ -1,9 +1,12 @@
 package com.kernusr.tulbath.adapter;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +76,7 @@ public class CustomListAdapter extends BaseAdapter {
 
         // getting billionaires data for the row
         BathContent m = bathItems.get(position);
-        final ArrayList phonesArr = m.getPhones();
+        final ArrayList<String> phonesArr = m.getPhones();
 
         // thumbnail image
         itemImage.setImageUrl(m.getItemImage(), imageLoader);
@@ -88,7 +91,7 @@ public class CustomListAdapter extends BaseAdapter {
                 dialBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v){
-                        Toast toast = Toast.makeText(v.getContext(), "Номер не задан", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(activity, "Номер не задан", Toast.LENGTH_SHORT);
                         toast.show();
                     }
                 });
@@ -106,9 +109,23 @@ public class CustomListAdapter extends BaseAdapter {
             default: //вызываем диалоговое окно для выбора номера;
                 dialBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
-                        Toast toast = Toast.makeText(v.getContext(), "Задано несколько номеров", Toast.LENGTH_SHORT);
-                        toast.show();
+                    public void onClick(final View v){
+                        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
+                        builder.setTitle("Я звоню!");
+                        builder.setItems(phonesArr.toArray(new CharSequence[phonesArr.size()]), new DialogInterface.OnClickListener(){
+
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phonesArr.get(which)));
+                                activity.startActivity(i);
+                                dialog.dismiss();
+                            }
+                        });
+                        builder.setCancelable(true);
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        //Toast toast = Toast.makeText(v.getContext(), "Задано несколько номеров", Toast.LENGTH_SHORT);
+                        //toast.show();
                     }
                 });
                 break;
