@@ -35,7 +35,6 @@ public class MainActivity extends Activity {
     // Log tag
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    private static final String url = "http://tulbath.sitevtule.com/catalog";
     private ProgressDialog pDialog;
     private List<BathContent> bathContentList = new ArrayList<BathContent>();
     private ListView listView;
@@ -43,6 +42,8 @@ public class MainActivity extends Activity {
 
     private boolean mHasData = false;
     private boolean mInError = false;
+
+    private boolean loadLastPage = false;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -67,13 +68,16 @@ public class MainActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 // getting values from selected ListItem
-                String pid = ((TextView) view.findViewById(R.id.id)).getText()
-                        .toString();
+                String  c_id = ((TextView) view.findViewById(R.id.id)).getText().toString(),
+                        address = ((TextView) view.findViewById(R.id.address)).getText().toString(),
+                        name = ((TextView) view.findViewById(R.id.name)).getText().toString();
 
                 // Запускаем новый intent который покажет нам Activity
                 Intent intent = new Intent(getApplicationContext(), FullActivity.class);
-                // отправляем pid в следующий activity
-                intent.putExtra("client_id", pid);
+                // отправляем данные в следующий activity
+                intent.putExtra("c_id", c_id);
+                intent.putExtra("address", address);
+                intent.putExtra("name", name);
                 startActivity(intent);
             }
         });
@@ -142,6 +146,7 @@ public class MainActivity extends Activity {
             if (loading) {
                 if (totalItemCount > previousTotal) {
                     loading = false;
+                    mHasData = true;
                     previousTotal = totalItemCount;
                     currentPage++;
                 }
@@ -149,6 +154,7 @@ public class MainActivity extends Activity {
             if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
                 loadPage();
                 loading = true;
+                mHasData = false;
             }
         }
 
@@ -162,31 +168,37 @@ public class MainActivity extends Activity {
     }
 
     private void loadPage() {
-        int page = 1 + (bathContentList.size() / 10);
-        JsonArrayRequest bathReq = new JsonArrayRequest(Request.Method.GET,
-                url + "?page=" + page,
-                null,
-                createReqSuccessListener(),
-                createReqErrorListener());
-        AppController.getInstance().addToRequestQueue(bathReq);
+        if(!loadLastPage){
+            int page = 1 + (bathContentList.size() / 10);
+            JsonArrayRequest bathReq = new JsonArrayRequest(Request.Method.GET,
+                    getString(R.string.content_link) + "?page=" + page,
+                    null,
+                    createReqSuccessListener(),
+                    createReqErrorListener());
+            AppController.getInstance().addToRequestQueue(bathReq);
+        }
     }
 
 
     private Response.Listener<JSONArray> createReqSuccessListener() {
         return new Response.Listener<JSONArray>() {
 
-            private static final String img_url = "https://bytebucket.org/tulbath/tulbath_content/raw/1cc09ade0fdabd6a1ed5555cf609fb7a54daf3fb/images/drawable-hdpi/";
-
             @Override
             public void onResponse(JSONArray response) {
                 Log.d(TAG, response.toString());
-
+                loadLastPage = response.length()<10;
                 for (int i = 0; i < response.length(); i++) {
                     try {
                         JSONObject obj = response.getJSONObject(i);
                         BathContent bathItem = new BathContent();
                         bathItem.setName(obj.getString("name"));
-                        bathItem.setItemImage(img_url + "banya" + obj.getInt("id") + ".jpg");
+                        bathItem.setItemImage(
+                                getString(R.string.image_link)
+                                +obj.getInt("id")
+                                + "_"
+                                +obj.getString("item_image")
+                                +"_item_image"
+                                + ".jpeg");
                         bathItem.setPrice(obj.getString("price"));
                         bathItem.setId(obj.getInt("id"));
                         bathItem.setAddress(obj.getString("address"));

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">TulBath</string>
+    <string name="app_name">Тульские бани</string>
     <string name="title_activity_item_full">ItemFullActivity</string>
     <string name="title_activity_settings">Settings</string>
 
@@ -61,4 +61,9 @@
     <string name="pref_ringtone_silent">Silent</string>
 
     <string name="pref_title_vibrate">Vibrate</string>
+
+    <!-- Ссылки на ответы от Сервера (типо API) -->
+    <string name="content_link">http://tulbath.sitevtule.com/content</string>
+    <string name="image_link">http://tulbath.sitevtule.com/drawble/thumb/</string>
+    <string name="details_link">http://tulbath.sitevtule.com/content/details</string>
 </resources>
